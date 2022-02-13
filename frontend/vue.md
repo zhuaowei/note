@@ -1,5 +1,15 @@
 # VUE
 
+ 参考资料：
+
+[vue2.x 官方教程](https://cn.vuejs.org/v2/guide/index.html)
+
+[vue3.x 官方教程](https://v3.cn.vuejs.org/guide/installation.html)
+
+[黑马程序员vue前端基础教程-4个小时带你快速入门vue](https://www.bilibili.com/video/BV12J411m7MG?from=search&seid=12214968412190924259&spm_id_from=333.337.0.0)
+
+[尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通](https://www.bilibili.com/video/BV1Zy4y1K7SH?spm_id_from=333.1007.top_right_bar_window_view_later.content.click)
+
 ## 一、VUE 2.x
 
 ### （一）、VUE 基础
@@ -525,6 +535,81 @@ data: {
 
 ##### 7.3、事件修饰符
 
+#### 8、Vue的生命周期
+
+从创建vue实例到vue实例销毁的过程。重要的是 mounted和beforeDestroy
+
+-   初始化过程
+
+1.   new Vue()
+
+2.   Init Events and LifeCycle  初始化：生命周期、事件，但数据代理还未开始。
+
+3.   ==beforeCreate== 此时还无法通过vm访问到data中的数据、methods中的方法。
+
+4.   Init injections and reactivity 初始化：数据检测、数据代理
+
+5.   ==created== 可以通过vm访问到data中的数据，methods中的方法。
+
+6.   解析模板，生成虚拟DOM，页面中位显示解析的内容。具体包括以下几个步骤
+
+     1.   判断是否有el挂载点，如果有判断是否有模板选项如果也有编译模板到render方法。
+     2.   如果没有el挂载点，等待 `vm.$mounted(el)` 被调用，绑定挂载点，判断是否有template配置项，如果没有，编译挂载点内的outerHTML（包括div）作为模板。
+
+     >   el挂载点是必须的，如果没有配置el，也没有通过方法绑定挂载点，vue初始化就直接结束了。
+
+7.   ==beforeMount== 页面是还未经过vue编译的DOM结构，所有对DOM的操作都不奏效，（因为后面会用虚拟DOM替换掉未编译的内容。）
+
+8.   create vm.$el and replace ‘el’ with it 将内存中的虚拟DOM转为真实DOM。
+
+9.   ==mounted== 此时页面中呈现的是经过vue编译的DOM，对DOM的操作均有效，（尽量避免）。
+
+     至此，初始化的工作完成，此时可以开启定时器，发送网络请求，订阅消息，绑定自定义事件。
+
+-   数据更新过程
+
+10.   ==beforeUpdate== 当代理数据发生变化时，进入更新流程，此时，数据是最新的，但是，vue还未将更新后的页面渲染上，页面上的数据是更新之前的。
+11.   Virtual DOM re-render and patch 根据更新的数据生成虚拟DOM，然后与旧的虚拟DOM进行比较，最终完成页面更新。即完成了 Model -> View 的更新。
+12.   ==updated== 更新完成。此时的数据和页面中的数据是一致的。
+
+-   销毁过程
+
+13.   ==beforeDestroy== 当 vm.$destroy() 被调用后，进入销毁流程，beforeDestroy是销毁之前的准备工作。此时，代理数据data，methods，指令还可用，但是对数据的更新不会触发更新流程。一般此时进行关闭定时器，取消订阅消息，解绑自定义事件等收尾工作。
+14.   销毁监视，子组件和事件监听器
+15.   ==Destroyed== 
+
+```vue
+new Vue(
+    el: "#app",
+    // 多行使用 ``，使用模板回完全替换绑定的容器（容器如果有属性会丢失，不建议使用）
+    template: `
+        <div>
+            ...
+        </div>
+    `,
+    data: {
+        name: 'zhangsan'
+    },
+    // 配置生命周期各阶段的方法。
+    beforeCreate() {
+    },
+    created() {
+    },
+    beforeMount() {
+    },
+    mounted() {
+    },
+    beforeUpdate() {
+    },
+    updated() {
+    },
+    beforeDestroy() {
+    },
+    destroyed() {
+    }
+);
+```
+
 
 
 ### （三）、网络应用
@@ -632,12 +717,17 @@ let app = new Vue({
 -   使用声明的组件名作为标签，使用组件。
 -   组件之间相互独立，各自维护自己的变量。
 -   组件可以被无限复用，它和Vue很多属性相同，不同的是没有el挂载点。
+-   data只能使用函数形式，否则会报错。
+
+
 
 ##### 1.1、组件名
 
-组件名有两种书写方式，一就是上面写的使用 `-` 分阁各单词。二是使用大驼峰的方式书写。
+单个词组件名可以全部小写和首字母大写。
 
-使用大驼峰的组件名可以使用 `-` 使用组件，二使用 `-` 的只能使用定义的名字。
+多个词组件名可以使用大驼峰（需要使用脚手架）或使用 `-` 间隔，无论使用那种方式，都需要在使用时与名字一致。
+
+组件有一个name配置项，可以在开发者工具中显示这个名字。
 
 ##### 1.2、全局注册
 
@@ -688,7 +778,7 @@ new Vue({
 
 ##### 1.4、模板
 
-模板最外层必须由一个元素包裹，否则会只显示第一个被顽症包裹的内容。
+模板最外层必须由一个元素包裹，否则会只显示第一个被完整包裹的内容。
 
 #### 2、prop（外部变量）
 
@@ -696,9 +786,84 @@ new Vue({
 
 因为html的属性是大小写不敏感的，所以在使用组件，给组件内变量赋值的时候，需要将变量名转换成对应的“短横线分隔形式”。
 
+`camelCase => camel-case`
 
+##### 2.2、变量类型
 
+使用列表无法指定属性类型，使用对象可以。
 
+```vue
+props: {
+    title: String,
+    likes: Number,
+    isPublished: Boolean,
+    commentIds: Array,
+    author: Object,
+    callback: Function,
+    contactsPromise: Promise // or any other constructor
+}
+```
+
+类型可以是String number Boolean Array Object Function
+
+##### 2.3、传递静态值或动态值
+
+无论传入什么值，都需要使用v-bind指定。
+
+如果传入一个对象，相当于传入一系列属性值，key为属性名，value为属性值。
+
+```vue
+<component-a v-bind="post"></component-a>
+
+props: {
+    post: {
+        title: "hello",
+        name: "aaa"
+    }
+}
+```
+
+##### 2.4、单项数据流
+
+父组件的porp回更新到子组件，子组件的porp更新不会影响父组件。如果内部改变子组件的porp，会在控制台警告提示。
+
+##### 2.5、prop数据验证
+
+```vue
+Vue.component('my-component', {
+  props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+    // 多个可能的类型
+    propB: [String, Number],
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+})
+```
 
 
 
@@ -724,15 +889,476 @@ new Vue({
 
 `{{}}` 叫作插值表达式。
 
-2.3、
+#### 3、指令
 
-#### 3、模板表达式
+// TODO
 
+#### 4、过滤器
 
+对展示数据进行简单地格式化处理。然后再展示出来。
 
+##### 4.1、注册过滤器
 
+1、局部注册
 
+```vue
+new Vue({
+    ...,
+    filters: {
+        timeFormater(value, pattern='YYYY-MM-DD HH:mm:ss') {
+            return dayjs(value).format(pattern);
+        },
+        ...
+    }
+});
+```
 
+>   1、过滤器默认接收管道前的一个参数，也可以给过滤器添加参数，es6中可以给参数设置默认值。
+>
+>   2、返回的值会渲染到插值表达式中
+
+2、全局注册
+
+`Vue.filter(name, callback);`
+
+```
+Vue.filter('mySlice', function([...]) {
+    return ...;
+});
+```
+
+##### 4.2、使用过滤器
+
+1.   `<h1>{{ time | timeFormater }}</h1>` （无参）
+2.   `<h1>{{ time | timeFormater('YYYY/MM/DD') }}</h1>` （有参）
+3.   `<h1>{{ time | timeFormater('YYYY/MM/DD') | mySlice }}</h1>` （嵌套）
+
+>   1.   过滤器默认会传入管道前的参数，不用写
+>   2.   其余参数可以像调用函数一样传入
+>   3.   管道嵌套从左到右依次执行，后一个管道的参数是前一个管道的返回值。
+>   4.   v-model指令不可以使用过滤器
+
+#### 5、自定义指令
+
+// TODO
+
+### （二）组件
+
+#### 1、组件嵌套
+
+首先准备两个组件，一个为school，另一个为student，让school中包含student需要在school配置项中配置components，然后在school模板中加上student组件标签。使用是，只需要将school注册到vm中。
+
+```
+// 声明student组件
+const student = Vue.extend({
+    template: `
+        <div>
+            ...
+        </div>
+    `,
+    data() {
+    
+    },
+});
+
+// 声明school组件
+const school = Vue.extend({
+	template: `
+        <div>
+            ...
+            <student></student>
+            ...
+        </div>
+	`,
+	data() {
+	
+	},
+	// 注册student组件（局部）
+	components: {
+        // 如果同名，可以简写
+        student
+	}
+});
+
+// 注册school组件（局部）
+const vm = new Vue({
+    el: "#root",
+    data: {
+    
+    },
+    components: {
+        school
+    }
+});
+
+// 使用组件
+<div id="root">
+    <school></school>
+</div>
+```
+
+>   组件标签可以使用单闭合的形式 <student/> 但是，必须使用脚手架，否则后面的组件标签不会生效。
+>
+>   一般使用一个app组件管理下面的组件，vm只需要管理一个app组件既可。
+
+#### 2、组件声明
+
+声明组件的另一种方式
+
+```vue
+// 第一步： 声明一个组件
+const school = Vue.extend({
+    template: ``,
+    data() {
+        return {
+            
+        };
+    }
+});
+// 第二步：注册组件
+const vm = new Vue({
+    el: "#root",
+    components: {
+        // 左边为将要使用的标签名，右边为组件变量
+        school: school
+    }
+});
+// 第三步：使用组件
+<div id="root">
+    <school></school>
+</div>
+```
+
+#### 3、组件创建原理
+
+创建组件时，Vue.extend() 会帮我们自动调用 VueComponent() 函数，它是一个构造函数，最终会将这个函数返回给组件，因此，组件的实质是一个函数。不同的组件是不同的函数，因为每次调用VueComponent时都会创建一个变量返回。
+
+组件data，methods，watch，computed中的this是指组件实例，组件实例一般称为vc。vm管理着一些vc。
+
+组件和vue的区别很小，只有el和data有区别。
+
+#### 4、Vue内置关系
+
+##### 4.1、补充知识：
+
+显示原型对象：声明的构造函数都有一个显示原型对象（红色线），即Function.prototype。所有构造函数的显示原型对象都最终指向Object的原型对象，即Object.prototype，而它指向null。
+
+隐式原型对象：任何对象，包括原型对象，都有一个隐式原型对象，它指向其构造函数的显示原型对象（蓝色线）。
+
+使用构造方法定义的属性可以使用隐式原型对象访问到。一般会在构造函数中定义属性，使用构造函数的显示原型对象定义方法，也可以添加属性。（不能使用字面量的方式，即对象方式，会覆盖原来的构造函数）
+
+隐式原型链：当调用对象中的属性时，如果定义的没有，会找到它的隐式原型对象，如果还没有，会继续一层一层地找，直到Object.prototype。
+
+```
+function Fn() {
+    this.a = 1;
+    this.b = 2;
+};
+
+Fn.prototype.c = function() {
+    return this.a + this.b;
+}
+
+Fn.prototype = {
+    c: function() {
+        return this.a + this.b;// a和b是undefined，因此c是NaN
+    }
+}
+```
+
+##### 4.2、内置关系
+
+Vue将组件实例的隐式原型对象的隐式原型对象指向了vue的原型对象。即`VueComponent.prototype.__proto__ === Vue.prototype`，也即`vc.__proto__.__proto__ === vm.__proto__`。
+
+这样vc也可以访问vue中的方法和属性。
+
+![image-20220211231157543](image-20220211231157543.png)
+
+#### 5、单文件组件
+
+##### 5.1、文件定义
+
+扩展名 `.vue`
+
+内容：
+
+```
+<template>
+    <!-- 模板 html -->
+    <div>
+        
+    </div>
+</template>
+
+<script>
+    /* 脚本 js */
+export default {
+    name: 'School',
+    data() {
+        return {
+        };
+    },
+    mounted() {
+    },
+    methods: {
+    },
+};
+</script>
+
+<style lang="" scoped>
+    /* 样式 */
+</style>
+```
+
+##### 5.2、模块暴露
+
+如何将模板暴露出去供使用？三种方式。
+
+1.   分别暴露 `export const school = Vue.extend({});`
+2.   统一暴露 `export {school}`
+3.   默认暴露 `export default school;`
+
+>   一般使用上面的方式，默认暴露，只写配置项，再加上name配置。
+
+##### 5.3、Vue脚手架
+
+1.   安装vue `npm install -g @vue/cli`
+2.   创建项目 `vue create vue_test`
+3.   运行项目 `cd vue_test; npm run serve`
+
+##### 5.4、项目结构
+
+```
+vue_test(/)
+|
+|-node_modules（文件夹，放的是vue项目使用的依赖）
+|
+|-public（放的是页签图表和html文件）
+|    |- favicon.ico
+|    |- index.html
+|-src（资源文件夹）
+|    |-assets（静态资源文件夹）
+|    |-components（组件文件夹）
+|    |- App.vue（所有组件的父组件）
+|    |- main.js（程序的入口）
+|- .gitignore（git忽略文件）
+|- babel.config.js（babel配置文件）
+|- package-lock.json（包版本控制文件）
+|- package.json（打包配置文件，文件的版本等）
+|- README.md readme
+```
+
+程序运行从main.js开始，main.js中导入了vue和App，创建了vue实例，绑定了public文件夹下的index.html中的元素。
+
+App组件中定义了组件的模板并注册了子组件。
+
+子组件定义自己的结构样式和功能。
+
+>   1.   `<%= BASE_URL %>` 定义路由的根路径，它就是文件结构中public所在的目录。
+>   2.   noscript标签在js可用的时候不会显示。
+>   3.   babel是ES6转ES5的插件。ES6有一些新功能和函数。
+
+##### 5.5、render
+
+render是一个vue的配置项，是一个函数，它有一个参数，也是一个函数，这个函数可以将模板创建。
+
+```
+new Vue({
+    el: "#root",
+    render(createElement) {
+        // 返回函数创建的结果，传入两个参数，一个是元素，一个是内容
+        return createElement('h1', 'hello');
+    }
+});
+```
+
+一般使用箭头函数的方法将render简写。函数可以写成箭头形式的函数 `(h) => h(App)`，因为只有一个参数，可以将前一个括号省略。因为App是定义好的模板，是一个变量，可以只传入元素。
+
+```
+new Vue({
+    el: "#root",
+    render: h => h(App)
+});
+```
+
+>   为什么要用render？
+>
+>   vue分为两个部份，一是vue核心，包含vue生命周期和各种方法，二是模板解析器，可以解析complate中的模板。
+>
+>   运行版本的vue不包含模板解析器，所以无法解析模板，所以使用render，也可以引入完整版的vue。
+>
+>   runtime的vue不包含模板解析器，所以更小，大概少1/3。
+
+##### 5.6、脚手架配置文件
+
+`vue.config.js` 可以配置运行vue的规则。与package.json同级。
+
+#### 6、组件通讯
+
+##### 6.1、ref元素属性
+
+在vue中使用ref属性替代id，它可以完成ref的工作，而且能够获取vc实例。
+
+`this.$refs.title` （`ref="title"`）
+
+如果获取的元素组件，则会获取该组件的实例。
+
+使用 `document.getElementBy..()` 获取的始终是DOM元素。
+
+##### 6.2、props配置项
+
+父组件项子组件中传入值，需要在子组件标签上用属性的方式传入，也可以使用v-bind指令传入。不同的是v-bind会将内容作为表达式执行，直接写会当作字符串。
+
+子组件需要在组件定义时设置接受值的变量，即使用props配置项。
+
+有三种接收方式。
+
+1.   简单接收，不限定
+
+`props: ['name', 'age']`
+
+2.   限定类型
+
+```
+props: {
+    name: String,
+    age: Number
+}
+```
+
+3.   详细限定
+
+可以限定类型，是否为必须和默认值。
+
+```
+props: {
+    name: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: Number,
+        default: 18
+    }
+}
+```
+
+>   1.   props的优先级高于data
+>
+>   2.   props的变量是只读的，不建议直接改，可以使用data接收props
+>
+>         `data() {return {studentName : this.name};}`
+>
+>   3.   传参的变量名不能是vue保留关键字，例如key，ref
+
+##### 6.3、mixin混入
+
+将组件中重复的代码抽取，复用。
+
+编写一个js文件，里面的对象可以是vc中的所有配置项，然后将其暴露出去。在组件中引入，然后配置到mixin中。
+
+>   mixin.js
+
+```
+// 注意暴露方式，影响引入方式
+export const hello = {
+    data() {
+        return {
+        
+        };
+    },
+    methods: {
+    
+    },
+    mounted() {
+    
+    }
+}
+```
+
+>   Student.vue
+
+```
+// 引入
+import {hello} from './mixin.js'
+
+export default {
+    ...,
+    // 局部混入
+    mixins: [hello, ...]
+}
+```
+
+>   1.   mixin中可以配置很多东西，例如函数和生命周期钩子等
+>   2.   如果data中的数据冲突，以组件中的为准
+>   3.   如果生命周期钩子冲突，则都会执行，以mixin中的为先。
+
+-   全局混入
+
+在 `main.js` 中引入，然后全局混入
+
+>   main.js
+
+```
+import {hello, ...} from './xxx.js'
+
+Vue.mixin(hello)
+Vue.mixin(...)
+Vue.mixin(...)
+Vue.mixin(...)
+```
+
+#### 7、插件
+
+##### 7.1、定义插件
+
+>   plugins.js
+
+```
+export default {
+    install(Vue) {
+        Vue.filter(...);
+        Vue.directive(...);
+        Vue.mixin(...);
+    }
+}
+```
+
+1.   可以在文件中定义插件，然后暴露
+2.   插件是一个对象，里面包含install函数，函数有一个参数，指Vue的构造函数。
+3.   插件可以定义全局的过滤器、自定义指令和混入。
+
+##### 7.2、使用
+
+>   main.js
+
+```
+// 引入插件
+import plugins from './plugins.js'
+
+// 应用插件
+Vue.use(plugins)
+```
+
+#### 8、样式
+
+##### 8.1、scoped
+
+在vue的组件中定义的style样式会汇总在一起。如果有类名重复的样式，会按照引入的顺序，覆盖掉前面的。
+
+当我们只想让样式在本组件中生效时，可以使用 `scoped` 属性修饰。
+
+```
+<style scoped>...</style>
+```
+
+一般在component中的组件会使用 `scoped`，App组件不用。
+
+##### 8.2、lang
+
+style还有一个属性 `lang` ，表示书写样式的语言/方式。默认值为css，还可以是 less。
+
+less是另一种样式定义的方式，可以嵌套着写。
 
 ## Vue3.x
 

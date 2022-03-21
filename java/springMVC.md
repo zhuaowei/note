@@ -923,9 +923,9 @@ public class AccessHistoryInterceptor implements HandlerInterceptor {
 
 4、MVC处理流程
 
-![image-20210815115653317](image-20210815115653317.png)
+![image-20210815115653317](./img/image-20210815115653317.png)
 
-![image-20210815115518445](image-20210815115518445.png)
+![image-20210815115518445](./img/image-20210815115518445.png)
 
 ## 2、SSM整合
 

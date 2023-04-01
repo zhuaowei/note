@@ -50,7 +50,7 @@ div.box1 {
 }
 ```
 
-如果多个选择器中有元素选择器，元素选择器要放在前面。
+如果多个选择器中有元素选择器，**元素选择器要放在前面**。
 
 #### 1.2.2、并集选择器
 
@@ -58,7 +58,7 @@ div.box1 {
 
 ```css
 h1, p {
-    // 使用 , 分组，选择所有会 h1 元素和 p 元素
+    // 使用 , 分组，选择所有 h1 元素和 p 元素
 }
 
 h1.demo, p.test {
@@ -194,8 +194,6 @@ ul > li:not(:nth-of-type(3)) {
 ```
 
 #### 1.5.2、a元素的伪类
-
-1.   link。正常的链接，没有被访问过的链接。
 
 ```css
 a:link{
@@ -415,7 +413,7 @@ L 亮度：颜色的亮度，`0% - 100%` ，0% 就是黑色，100%就是白色�
 1.   独占一行
 2.   默认宽度是父元素的宽度
 3.   默认高度是子元素的高度
-4.   从上到下一次排列。
+4.   从上到下依次排列。
 
 **行内元素：**
 
@@ -588,7 +586,7 @@ div {
 
 #### 3.2.3、水平布局
 
-子元素在父元素中的水平布局。需要满足一个等式，就是子元素以下 7 个属性的值之和要等于父元素的 `width`。如果不满足，则称这种情况为过渡布局，浏览器会自动修改一个属性（margin-right）满足这个等式。
+子元素在父元素中的水平布局。需要满足一个等式，就是子元素以下 7 个属性的值之和要等于父元素的 `width`。如果不满足，则称这种情况为过度布局，浏览器会自动修改一个属性（margin-right）满足这个等式。
 
 子元素这7个属性从左到右分别是：
 
@@ -622,7 +620,7 @@ margin-right
 }
 ```
 
-1.   如果出现了过渡布局，且没有auto属性值的情况，就会默认修改margin-right，使这个等式成立。
+1.   如果出现了过度布局，且没有auto属性值的情况，就会默认修改margin-right，使这个等式成立。
 
 2.   子元素这 7 个属性中，有 3 个可以设置为 `auto`，分别是 `margin-left,width,margin-right`如果出现了auto：
 
@@ -673,7 +671,7 @@ auto 自动生成滚动条，根据需要生成水平或垂直滚动条，或者
     -   两个元素的外边距都是负的，取绝对值最大的那个。
 -   父子元素之间
     -   父子元素的外边距相邻会发生外边距的传递，子元素传给父元素。例如子元素的上边距会传给父元素，父元素就会下移。
-    -   这样会影响整体布局，所以必须解决，解决办法就是不让他俩的外边距相邻。例如可以使用一个边框或者一个padding阻挡一下，只要有1px就可以。之后会有完美的解决方案 `top`。
+    -   这样会影响整体布局，所以必须解决，解决办法就是不让他俩的外边距相邻。例如可以使用一个边框或者一个padding阻挡一下，只要有1px就可以。之后会有完美的解决方案。
 
 #### 3.2.6、行内元素的盒模型
 
@@ -795,13 +793,13 @@ border-top-left-radius: 10px 20px;
 border-radius: 10px / 20px;
 ```
 
-### 3.3、浮动
+## 四、浮动
 
-#### 3.3.1、设置浮动
+### 4.1、设置浮动
 
 浮动可以让元素脱离文档流 （normal flow），不再受文档流的规则限制，就相当于上浮一层，然后向左或者向右移动。
 
-不受文档流的显示：块级元素不再满足横向的等式，下面的元素在文档流中看不到浮动的元素，会自动向上靠。
+不受文档流的限制：块级元素不再满足横向的等式，下面的元素在文档流中看不到浮动的元素，会自动向上靠。
 
 如何设置？
 
@@ -817,7 +815,7 @@ float 取值有三个：
 2.   left 浮动后向左移动
 3.   right 浮动后向右移动
 
-#### 3.3.2、浮动的特性
+### 4.2、浮动的特性
 
 1.   脱离文档流，**不受横向等式的约束**。
 2.   向上浮动一层，**后面元素看不到浮动元素，自动上移**。
@@ -826,7 +824,7 @@ float 取值有三个：
 5.   浮动的元素**不会超过同级的、在文档前面的、浮动的元素** ，这个不会超过指的是水平方向和垂直方向。
 6.   如果浮动元素的前面是不浮动的元素，则**浮动元素会被它挡着，不能上移**。
 
-#### 3.3.3、浮动的其他特性
+### 4.3、浮动的其他特性
 
 1.   元素变浮动后，后面的元素上移，但是浮动的元素不会盖住后面元素的文字，**文字会环绕这浮动元素**，这也是浮动设计的最初目的。
 2.   脱离文档流后，块元素
@@ -835,236 +833,495 @@ float 取值有三个：
 3.   脱离文档流后，行内元素
      1.   变得和浮动的块元素一样，一样的特点。换句话说，浮动后只有一种元素特点。
 
-## 控制边框和背景
+### 4.4、高度塌陷和BFC
 
-```html
-<style type="text/css">
-    a {
-        border-width: 8px;
-        border-color: black;
-        border-style: solid;
-        border-top-color: white;
-        
-    }
-    p {
-        width: 500px;
-        height: 600px;
-        border: 5px solid red;
-        border-top: 10px dashed yellow;
-        background-color: blue;
-        background-image: url();
-    }
-</style>
-<!-- border-style 有很多属性 -->
+#### 4.4.1、高度塌陷
+
+父元素包含着子元素，如果不设置浮动，父元素的高度就会被子元素撑开，如果子元素设置了浮动（例如要让子元素横向排列），那么父元素就不会包裹子元素，它的高度就会消失，而它后面的元素就会上移，影响布局，这就是高度塌陷。
+
+#### 4.4.2、BFC
+
+BFC（Block Formatting Context）是块级格式化环境。它是css的一个隐藏属性，就是无法通过属性直接开启，默认是关闭的。开启了BFC后，该元素就变成了一个独立的布局区域。
+
+开启BFC后：
+
+1.   开启BFC的元素不会被浮动元素所覆盖。 
+2.   开启BFC的元素，子元素不会和父元素的外边距重叠
+3.   开启BFC的父元素可以包含开启浮动的子元素。
+
+利用第三条可以解决高度塌陷的问题，开启BFC是有副作用的，我们要找副作用最小的一种。
+
+#### 4.4.3、开启BFC
+
+1、开启浮动可以开启BFC（不推荐）
+
+2、设置为行内块元素（不推荐）
+
+3、overflow设置为**非 `visible` 的值** 
+
+```css
+overflow: scroll; // 副作用：有滚动条
+overflow: auto;  // 也可以，习惯用hidden
+overflow: hidden; // 副作用最小
 ```
 
-```html
-<style type="text/css">
-	body {
-        background-attachment: fixed;
-		background-image: url();
-		backgound-repeat: no-repeat;
-        background-size: auto;
-        
-	}
-    
-</style>
-<!-- background-size:auto/contain/cover -->
-```
-```html
-<style type="text/css">
-    p {
-        width: 50px;
-        height: 50px;
-        border: 1px solid black;
-        background-color: antiquewhite;
-        border-radius: 10px / 15px;
-    }
-</style>
-```
-## 文本样式
+#### 4.4.4、clear
 
-```html
-<style type="text/css">
-    p {
-        text-align: center;
-        direction: ltr;
-        letter-spacing: 10px
-        word-spacing: 10px
-        line-height: 10px
-        text-indent: 50px
-        text-decoration: underline;
-        text-transform: capitalize;  
-    }
-</style>
-<!-- 
-	ltr: left to right
-	letter-spacing: 字间距
-	word-spacing: 单词间距（中文不能用）
-	line-height: 行间距
-	text-indent: 首行缩进
-	text-decoration: 装饰  underline/overline/line-through
--->
+clear属性设置后，可以清除其他浮动元素对本元素的影响。
+
+**可选值：**
+
+left 清除左浮动元素对本元素的影响
+
+right 清除有浮动元素对本元素的影响。
+
+both 清除两侧最大影响的浮动
+
+```css
+.box3 {
+    clear: left;
+}
 ```
 
-```html
-<style type="text/css">
-    p {
-        font-family: 微软雅黑;
-        font-size: 40px;
-        font-style: italic;
-        font-variant: small-caps;
-        font-weight: 900;
-        text-shadow: 10px 10px 5px red
-    }
-</style>
-<!-- 
-	font-size: italic/oblique/inherit
-	text-shadow: 水平偏移 竖直偏移 模糊程度 阴影颜色
-	font-variant: small-caps 小型大写
-	font-weight: 100 - 900 的整百
--->
+**原理：**根据上面浮动元素的大小设置一个上外边距。
 
+#### 4.4.5、伪类after解决高度塌陷
+
+终极解决方案，没有副作用。
+
+先说原理，现在有一个父元素和一个子元素，子元素设置浮动，然后父元素的高度就塌陷了。这个时候在子元素后面再添加一个div，然后让它清除浮动对自己的影响，由于新加的元素没有脱离文档流，父元素就要包裹它，所以父元素的高度就撑起来了。
+
+```css
+.box3 {
+    clear: both;
+}
 ```
 
-## 过渡
+凭空写出一个div对html结构没有意义，所以我们在父元素使用伪类after代替这个box3实现同样的功能。
 
-```html
-<style type="text/css">
-    p {
-        width: 100px;
-        height: 100px;
-        background-color: white;
-    }
-    p:hover {
-        width: 200px;
-        height: 200px;
-        background-color: blue;
-        transition-delay: 100ms;<!-- 延迟 -->
-        transition-duration: 500ms;<!-- 动画时间 -->
-        transition-propety: background-color;<!-- 里面的属性平滑过渡，其他的瞬发 -->
-        -weblit-transition-duration: ;
-        <!-- -webkit- chrome 和 Safari 浏览器内核支持，安全起见带上 -->
-        
-    }
-</style>
+```css
+.box1::after {
+    // 不需要添加内容
+    content: '';
+    // after 默认是行内元素，设置清除浮动没有效果，所以设置为块级元素
+    display: block;
+    // 清除浮动
+    clear: both;
+}
 ```
 
-## 动画
+#### 4.4.5、clearfix
 
-深入学习过渡
+之前提到过父子元素的外边距重叠时，子元素的外边距会传递给父元素，那时候没有完美的解决方案，这里就提到了。
 
-```html
-<!DOCTYPE HTML>
-<html>
-	<head>
-        <meta charset="utf-8">
-        <title>动画</title>
-        <style type="text/css">
-            p {
-                width: 100px;
-                height: 100px;
-                background-color: white;
-            } 
-            p:hover {
-                transition-timing-function: ease;
-                <!-- 平滑效果速度，其他属性看下面表格 -->
-                animation-duration: 500ms;
-                animation-delay: 200ms;
-                animation-name: suibian;
-                animation-iteration-count: infinite;
-                <!-- 动画无限执行，一个来回算两次 -->
-                animation-direction: alternate;
-                <!-- 恢复动画 -->
-    		}
-            @keyframes suibian {
-                from {
-                    width: 150px;
-                	height: 150px;
-                	background-color: orange;
-                }
-                <!-- 恢复动画的样式 -->
-                %50 {
-                    
-                }
-                %75 {
-                    
-                }
-                <!-- 关键帧类似 -->
-                to {
-                    width: 200px;
-                    height: 200px;
-                    background-color: blue;
-                }
-            }
-		</style>
-	</head>
-    <body>
-        <p></p>
-    </body>
-</html>
+出现外边距重叠的情况，要让父元素和子元素的外边距隔开才能解决，例如使用 padding 和 border，这里使用和伪类after类似的方法，使用before给父元素添加一个东西，隔开子元素。
+
+```css
+.box1::before {
+    content: '';
+    // 必须设置成 table，其他属性值不好用
+    display: table;
+}
 ```
 
-<table>
-    <tr>
-        <th>属性</th>
-        <th>作用</th>
-    </tr>
-    <tr>
-        <td>ease</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>ease-in</td>
-        <td>先慢后快</td>
-    </tr>
-    <tr>
-        <td>ease-out</td>
-        <td>先快后慢</td>
-    </tr>
-    <tr>
-        <td>ease-in-out</td>
-        <td>中间快，两边慢</td>
-    </tr>
-    <tr>
-        <td>liner(默认)</td>
-        <td>速度不变</td>
-    </tr>
-</table>
+同时，使用 `display: table` 也可以解决高度塌陷的问题，所以我们将二者结合，形成一个 真.终极解决方案，同时解决高度塌陷和外边距重叠。
 
-## 变换
+```css
+.clearfix::before,
+.clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+```
+
+这个类的写法是《CSS权威指南》的作者在书中提出的，已经使用了好几年了。
+
+## 五、定位
+
+### 5.1、position
+
+定位是一种高级的布局手段，通过定位可以将元素摆放到任何位置。
+
+如何开启定位？使用 `position` 属性，只要它的属性值是 `非static`，就会开启定位。
+
+那么它有什么属性值？
+
+1.   static 默认值，静态的，不开启定位。
+2.   relative 开启相对定位
+3.   absolute 开启绝对定位
+4.   fixed 开启固定定位
+5.   sticky 开启粘滞定位
+
+### 5.2、relative
+
+相对定位是相对于元素没开启定位时的位置，偏移一定的 **偏移量（offset）** 。
+
+偏移量就是元素偏移之后的位置相对与原来位置的距离。如何表示？
+
+```
+top 相对于原位置向下偏移
+bottom 相对于原位置向上偏移
+
+left 相对于原位置向右偏移
+right 相对于原位置向左偏移
+```
+
+以上的 top 和 bottom 是垂直方向的偏移，left 和 right 是水平方向的偏移。如果偏移量是一个负值，那么他就会向偏移指定的反方向移动，所以 垂直方向和水平方向的偏移都只需要使用一个偏移方向即可。
+
+**开启定位的特点：**
+
+1.   开启定位后，偏移量没有设置，所以位置不会发生变化
+2.   相对定位是参照元素在文档流中的位置进行偏移的。
+3.   相对定位可以提高元素的层级，使其有能力覆盖其他元素
+4.   相对定位不会使元素脱离文档流
+5.   相对定位不会改变元素的性质，块还是块，行内还是行内。
+
+### 5.3、包含块（Containing Block）
+
+包含块分几种情况：
+
+-   正常情况下，某元素的包含块是离他最近的**祖先块元素**。必须是块元素。
+-   定位情况下，某元素的包含块是**离他最近的开启了定位的祖先元素**。
+-   html 标签，也叫根元素、初始包含块。当元素没有包含块时，会把html作为包含块。
+
+### 5.4、absolute
+
+绝对定位是相对于其包含块进行定位的。定位的偏移量是相对于包含块的内容边界进行定位的。
+
+left 该元素左外边距与包含块的内容区左边界的距离。
+
+right 该元素右外边距与包含块的内容区右边界的距离。
+
+top 该元素上外边距与包含块的内容区上边界的距离。
+
+bottom 该元素下外边距与包含块的内容区下边界的距离。
+
+如何设置包含块？**只要开启定位就可以作为包含块**。
+
+开启了绝对定位的元素有一些新的特性，与相对定位有很多不同。
+
+1.   开启绝对定位后，不设置偏移量，位置不会发生变化。
+2.   一旦设置了偏移量，就会相对于包含块偏移。
+3.   开启绝对定位后，**元素会从文档流中脱离**，后面的元素会向上移动。
+4.   绝对定位会改变元素的性质，行内变成块（脱离文档流后可以都看成一种性质），宽高被内容撑开。
+5.   绝对定位会使元素提升一个层级。
+
+### 5.5、fixed
+
+固定定位是相对于浏览器的视口定位的。也即，他不会随着html文档的滚动而滚动。
+
+**视口**：浏览器的可见窗口
+
+固定定位的特点：
+
+1.   和绝对定位性质很多是一样的。
+2.   不一样的是它是相对浏览器视口定位的。
+3.   他不会随着html文档的滚动而滚动
+
+### 5.6、sticky
+
+粘滞定位相当于相对定位和固定定位的结合，再达到某个阈值之前是相对定位，达到阈值之后是固定定位。
+
+```css
+.box1 {
+    position: sticky;
+    top: 10px;
+}
+```
+
+上面的样式是：在元素到达视口顶部10px之前，它是相对定位，就和正常文档流中的位置一样，随页面滚动而滚动；元素与视口顶部间距为10px之后是固定定位，固定在视口顶部 10px 处不动。
+
+### 5.7、绝对定位元素的位置
+
+之前在文档流中水平方向有一个等式，`margin-left + border-left + padding-left + width + padding-right + border-right + margin-right == 父元素的内容区宽度` 如果不满足就会触发过度约束，浏览器会自动修改 `margin-right` 以满足等式。
+
+当元素定位为绝对定位后，它也有一个等式，与上面类似，除了上面的7个值外，还要加上 `left` 和 `right` ，等式要满足等于包含块的内容区宽度。如果不满足也会触发过度约束。
+
+`left + margin-left + border-left + padding-left + width + padding-right + border-right + margin-right + right == 父元素的内容区宽度` 。
+
+这几个属性中能设置 `auto` 的属性有 `left/margin-left/width/margin-right/right` 。
+
+如果发生过度约束，
+
+1.   默认会修改 `right`满足等式。
+2.   如果有auto
+     1.   width 为 auto：会让宽度撑到最大。
+     2.   margin-left/right 为 auto：修改 auto，如果两者都为 auto，则平分。
+     3.   left/right 默认就是auto，所以会默认修改left和right。
+
+同理，**垂直方向也有一个等式约束，和上面的类似**。
+
+`top + margin-top + border-top + padding-top + height + padding-bottom + border-bottom + margin-bottom + bottom == 父元素的内容区高度` 。
+
+触发过度约束后的修改规则也是差不多的。
+
+### 5.8、元素的层级
+
+开启了定位的元素如果发生覆盖，默认会优先显示后面（结构上）的元素。如果要改变元素的显示层级，需要使用 `z-index` 属性设置层级的大小，层级越大，越优先显示。这个 `z-index` 的属性值是一个 正整数。
+
+层级的特点：
+
+1.   默认会优先显示后面（结构上）的元素。
+2.   如果 `z-index` 的是相同的，也是按照后面（结构上）的元素优先显示的规则。
+3.   如果祖先元素和后代元素都开启了定位，修改祖先元素的 `z-index` 是没有用的，它不会覆盖后代元素。
+
+## 六、样式	
+
+### 6.1、字体
+
+`font-size` 设置字体的大小，`color` 设置前景色，经常用这个设置字体颜色。
+
+#### 6.1.1、font-family
+
+`font-family` 设置字体族，即设置一系列的字体，浏览器会从前往后找能使用的字体。
+
+三种常见的字体类型：
+
+>   字体类型不是一种字体，而是字体的风格。
+
+1.   serif 衬线字体，字体的笔画有多余的线修饰，例如宋体
+2.   san-serif 非衬线字体，字体的笔画没有多余的修饰。例如微软雅黑，黑体。
+3.   monospace 等宽字体，每个字幕所占的宽度是相同的。
+
+其余的不常用，也不重要。
+
+字体族可以设置多个值 `font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;`
+
+上面是B站的字体族设置。字体设置经常放在body中，后代元素会继承字体样式。
+
+font-family 只是推荐用户使用的字体，不涉及侵权。
+
+#### 6.1.2、font-face
+
+使用font-face可以让用户使用我们指定的字体，他们使用时会从服务器获取。
+
+```css
+@font-face {
+    font-family: 'myFont';
+    src: url();
+}
+body {
+    font-family: myFont;
+}
+```
+
+这样设置就有可能涉及侵权，一般也不这样使用字体。
+
+#### 6.1.3、图标字体
+
+建议使用 `Awesom font` 图标字体库
+
+[Awesom Font](https://fontawesome.com/)
+
+使用步骤：
+
+1.   下载 awesome font 图标字体库
+2.   解压后，把 css 和 webfonts 文件夹粘贴到自己的项目文件夹下。`/awesomeFont/`
+3.   引入css文件夹里的样式 `./awesomeFont/css/all.css`
+4.   使用图标字体，给一个 i 标签（一般使用这个标签代表图标字体），给两个class，一个是 `fas` ，另一个是图标的类名，去官网搜。
 
 ```html
-<!DOCTYPE HTML>
-<html>
-	<head>
-        <meta charset="utf-8">
-        <title>动画</title>
-        <style type="text/css">
-            p {
-                width: 100px;
-                height: 100px;
-                background-color: white;
-                background-clip: content-box;
-                <!-- 背景作用区域 -->
-            } 
-            p:hover {
-                width: 100px;
-                height: 100px;
-                background-color: white;
-                -webkit-transfrom: rotate(45deg);
-                <!-- 转动45度，默认顺时针，逆时针加 - 号 -->
-                transform: scale(1.5);
-                <!-- 缩放  scalex/scaley 缩放x/y -->
-                
-                transform-origin: top right;
-                <!-- 50px 70px -->
-    		}
-		</style>
-	</head>
-    <body>
-        <p></p>
-    </body>
-</html>
+<i class="fas fa-bell"></i>
 ```
+
+免费版只能使用 fas 和 fab。
+
+#### 6.1.3、图标使用方法
+
+除了直接使用类名，还有两种其他的方式使用图标字体。
+
+1、使用转义字符
+
+例如，给li标签换一个样式。
+
+```css
+li {
+    list-style : none; // 清除默认的样式
+}
+li::before {
+    content: '\'; // 字符的UninCode编码，可以去官网查看
+    font-family: Font Awesome 5 Brand; // 编码使用的字体，也可能是其他
+    font-weight: 900;
+}
+```
+
+2、使用实体
+
+使用 `&#x` 和 `;` 包裹UninCode 编码。 
+
+```html
+<p>&#xf0f3;</p>
+```
+
+#### 6.1.4、iconfont
+
+阿里的图标字体库。
+
+使用方式和上面的 Awesome font 一样，不过要挑选自己使用的图标。
+
+1.   首页搜索自己想要的图标，假如购物车，点击右上角的购物车，创建一个项目，调价到项目中。
+2.   在图标管理，我的项目中找到自己保存的项目，然后下载下来，有一个演示使用的html文件，根据这个操作就可以。
+
+#### 6.1.5、行高
+
+1.   行高可以通过 `line-height` 设置，它是文字所占的实际高度。
+
+2.   行高可以设置为像素，也可以设置为数字，设置为数字时会把行高设置为字体大小的倍数。
+
+3.   `font-size` 实际上设置的是每个字母框的高度。
+
+4.   对于单行文字，行高上下是平均分布的。
+
+#### 6.1.6、font
+
+使用 `font` 属性可以一次性设置多个属性值，要按要求的顺序写，而且不写的属性值有个默认值，会覆盖上面写的字体样式。
+
+1.   字体大小和字体族为必写的，而且只能写在最后。
+2.    `[]` 中为可选的
+3.   font-weight 字体粗细，100 - 900，一共9个等级，但大多数电脑没有装这么多等级。
+4.   font-style 字体样式，`normal` 是正常字体，`italic` 是斜体。
+5.   line-height：默认是1
+
+```css
+font: [font-weight] [font-style] font-size[/line-height] font-family;
+```
+
+#### 6.1.7、字体对齐
+
+1、水平方向
+
+水平方向使用 `text-align` 对齐字体
+
+1.   left 左对齐
+2.   right 右对齐
+3.   center 居中对齐
+4.   justify 两边对齐
+
+2、垂直方向
+
+垂直方向使用 `vertical-align` 对齐字体
+
+1.   baseline 默认值，基线对齐，是一条看不见的基准线，相当于英语书写中的第三条线。
+2.   top 顶部对齐
+3.   middle 基线加父元素中字母 `x` 高的一半。
+
+#### 6.1.8、其他字体样式
+
+##### 1、text-decoration
+
+设置字体的修饰样式
+
+1.   none 无修饰
+2.   underline 下划线，还可以设置下划线颜色、样式（IE不支持）`text-decoration: underline red dotted;`
+3.   line-through 删除线
+4.   overline 上划线
+
+##### 2、white-space
+
+设置文本中空白的处理方式。
+
+1.   normal 默认值，会将连续的空格、换行替换成一个空格。
+2.   nowrap 不换行
+3.   pre 保留里面的样式，不合并空格换行
+
+##### 3、overflow
+
+1.   `overflow: hidden;` 隐藏溢出部份
+
+2.   `text-overflow: ellipsis` 溢出部份用省略好代替
+
+### 6.2、背景
+
+#### 6.2.1、background-color
+
+设置背景颜色
+
+#### 6.2.2、background-image
+
+设置背景图片，会覆盖背景颜色，如果是透明图片，还可以看见部份背景。
+
+`background-image: url(./image/1.png);`
+
+#### 6.2.3、backgound-repeat
+
+设置背景图片的重复样式
+
+可选值有四个：
+
+1.   repeat 重复，在水平方向和垂直方向都会重复
+2.   repeat-x 水平方向重复
+3.   repeat-y 垂直方向重复
+4.   no-repeat 不重复
+
+#### 6.2.4、background-position
+
+设置图片的位置，一共要设置两个值，有两种方式
+
+1.   使用关键字
+     1.   top 顶部
+     2.   right 右边
+     3.   bottom 底部
+     4.   left 左边
+     5.   center 中间
+     6.   使用上面其中两个设置位置，right center 就是 水平方向右边，垂直方向左边
+     7.   如果只设置一个值，第二个默认是center
+2.   使用像素
+     1.   也是设置两个值
+     2.   第一个是水平方向偏移量
+     3.   第二个是垂直方向偏移量
+     4.   可以是负值
+
+#### 6.2.5、background-size
+
+设置图片的大小
+
+1.   像素值
+     1.   两个像素值，设置大小为执行值，但是比例会破坏
+     2.   设置一个，第二个为默认auto，宽度为指定值，按比例缩放
+2.   百分比
+     1.   和上面一样，可以设置两个值
+     2.   百分比是按照元素的 `origin大小` 设置的
+3.   关键字
+     1.   cover 铺满，保持比例
+     2.   contain 使内容能容纳下整个图片，保持比例
+
+#### 6.2.6、background-origin
+
+设置背景图片偏移的计算原点
+
+1.   padding-box 默认值，从内边距开始计算
+2.   border-box 从边框开始计算
+3.   content-box 从content开始计算
+
+#### 6.2.7、background-clip
+
+裁剪背景色，和 background-origin类似，设置背景色的显示范围
+
+1.   border-box 默认值，border及以内
+2.   padding-box padding及以内
+3.   content-box 只包含content
+
+#### 6.2.8、background-attachment
+
+设置背景图片的固定方式
+
+1.   scroll 跟随页面滚动
+2.   fixed 固定位置
+
+#### 6.2.9、background
+
+背景属性的简写形式，以上所有属性都可以写进去，而且没有顺序要求。只需要注意以下两点：
+
+1.   size必须写在position后面 `[background-position[/background-size]]`
+2.   origin 必须写在 clip 的前面
+
+#### 6.2.10、雪碧图
+
+使用背景图切换图片是会发生闪烁的情况，解决办法就是使用一张图，包含所有的要使用的图片，切换时改变图片的偏移量即可。这也叫雪碧图。
+
+优点：
+
+1.   只需访问一次图片，访问次数少，效率高
+2.   图片不闪烁
 

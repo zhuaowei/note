@@ -495,7 +495,7 @@ data: {
 
 3、数组中的对象
 
-```
+```html
 <div v-bind:class="[{ active: isActive }, errorClass]"></div>
 ```
 
@@ -962,7 +962,7 @@ Vue.filter('mySlice', function([...]) {
 
 #### 1、组件嵌套
 
-首先准备两个组件，一个为school，另一个为student，让school中包含student需要在school配置项中配置components，然后在school模板中加上student组件标签。使用是，只需要将school注册到vm中。
+首先准备两个组件，一个为school，另一个为student，让school中包含student需要在school配置项中配置components，然后在school模板中加上student组件标签。使用时，只需要将school注册到vm中。
 
 ```
 // 声明student组件
@@ -1138,7 +1138,7 @@ export default {
 
 ##### 5.3、Vue脚手架
 
-1.   安装vue `npm install -g @vue/cli`
+1.   安装vue-cli `npm install -g @vue/cli`
 2.   创建项目 `vue create vue_test`
 3.   运行项目 `cd vue_test; npm run serve`
 
@@ -1213,7 +1213,7 @@ new Vue({
 
 ##### 6.1、ref元素属性
 
-在vue中使用ref属性替代id，它可以完成ref的工作，而且能够获取vc实例。
+在vue中使用ref属性替代id，它可以完成id的工作，而且能够获取vc实例。
 
 `this.$refs.title` （`ref="title"`）
 
@@ -1223,7 +1223,7 @@ new Vue({
 
 ##### 6.2、props配置项
 
-父组件项子组件中传入值==或者方法==，需要在子组件标签上用属性的方式传入，也可以使用v-bind指令传入。不同的是v-bind会将内容作为表达式执行，直接写会当作字符串。
+父组件向子组件中传入值==或者方法==，需要在子组件标签上用属性的方式传入，也可以使用v-bind指令传入。不同的是v-bind会将内容作为表达式执行，直接写会当作字符串。
 
 子组件需要在组件定义时设置接受值的变量，即使用props配置项。
 
@@ -1267,7 +1267,7 @@ props: {
 >
 >   3.   传参的变量名不能是vue保留关键字，例如key，ref
 >
->   4.   父组件不仅可以将值传给子组件，而且可以传方法，这是很重要的子组件像父组件传数据的一种方式。也就是说，父组件定义好一个方法，这个方法可以修改父组件中的数据。然后传给子组件，子组件接收后，调用该方法，就相当于父组件调用了改方法。我愿称之为“呼儿将出换美酒”，父亲把酒壶给儿子去打酒。
+>   4.   父组件不仅可以将值传给子组件，而且可以传方法，这是很重要的子组件向父组件传数据的一种方式。也就是说，父组件定义好一个方法，这个方法可以修改父组件中的数据。然后传给子组件，子组件接收后，调用该方法，就相当于父组件调用了该方法。我愿称之为“呼儿将出换美酒”，父亲把酒壶给儿子去打酒。
 
 ##### 6.3、mixin混入
 
@@ -2230,7 +2230,7 @@ export default new Vuex.Store({
 
 这些模块最后可以按照上方的目录结构拆分成不同的文件。
 
-拆分成不同模块后，store里就没有模块中定义的属性和操作了，只有定义的模块，`$store.countAbout, $store.personAbout` ，这时，组件要从中取到各种数据和操作就需要使用模块名才行。
+拆分成不同模块后，store里就没有模块中定义的属性和操作了，只有定义的模块，`$store.countAbout, $store.personAbout` ，这时， 块名才行。
 
 第一种方法：不修改mapState等方法，使用 `countAbout.sum` 获取数据，
 
@@ -2321,7 +2321,7 @@ export default new VueRouter({
 ```js
 import Vue from 'vue';
 import App from './App';
-import router from './router'
+import router from './router'                                                                                       
 
 new Vue({
     render: h => h(App),
@@ -2536,7 +2536,7 @@ export default new VueRouter({
 
 #### 8、props
 
-上面说使用params传参数，通过`$route.params.id`可以获取传入的参数，但是要写这么多很麻烦，而且参数很多的时候会有很多代码。props配置就可以解决这个问题，让租价收到参数就像接收一个props一样方便。
+上面说使用params传参数，通过`$route.params.id`可以获取传入的参数，但是要写这么多很麻烦，而且参数很多的时候会有很多代码。props配置就可以解决这个问题，让组件收到参数就像接收一个props一样方便。
 
 props有三种定义方式，每一种都有不同的用法。
 
@@ -2932,7 +2932,7 @@ history模式：
 
 ##### 14.2、按需引入
 
-全部引入会导致js文件特别打，忍不了，使用按需引入，需要先安装一个库。
+全部引入会导致js文件特别大，忍不了，使用按需引入，需要先安装一个库。
 
 1.   安装 babel。`npm install babel-plugin-component -D`
 2.   修改babel配置。
